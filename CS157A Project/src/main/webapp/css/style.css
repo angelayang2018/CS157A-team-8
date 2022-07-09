@@ -1,0 +1,99 @@
+@import url(//fonts.googleapis.com/earlyaccess/jejumyeongjo.css);
+nav, .nav-list{
+	display: flex;
+}
+
+nav{
+	display: flex;
+	justify-content: space-between;
+	font-family: 'Arial';
+	align-items: baseline;
+	padding: 0px 100px;
+
+}
+
+form{
+	width: 40%;
+	height: 75%;
+	display: flex;
+	justify-content: center;
+	position: relative;
+}
+nav input{
+	border-radius: 7px;
+	background-color: #D9D9D9;
+	border-style: none;
+	width: 85%;
+	height: 28px;
+	padding: 10px 0px 10px 40px;
+	font-size: 20px;
+}
+
+nav button{
+	font-size: 20px;
+	border: transparent;
+	border-radius: 7px;
+	
+}
+
+nav ul{
+	height: 75%;
+	font-size: 20px;
+	display: flex;
+	width: 500px;
+	min-width: 400px;
+	justify-content: space-between;
+	list-style-type: none;
+	padding-left: 0;
+}
+
+form i{
+	position: absolute;
+	top: 16px;
+	left: 30px;
+	
+}
+
+nav ul, footer ul{
+	list-style:none;
+
+}
+
+
+
+footer{
+	font-family: 'Arial';
+	padding: 0px 100px;
+	font-size: 15px;
+}
+
+
+.footer-container{
+	display: flex;
+	justify-content: space-between;
+}
+
+.copyright{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+footer p{
+	margin: 0px;
+	font-size: 13px
+}
+
+nav a, footer a{
+	all: unset;
+	
+}
+
+.contact-info li {
+	padding:10px;
+}
+
+nav h1, footer h1{
+	font-family: 'Jeju Myeongjo', serif;
+	font-size: 45px;
+}
