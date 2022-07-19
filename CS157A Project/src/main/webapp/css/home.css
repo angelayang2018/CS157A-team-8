@@ -2,6 +2,33 @@
 	padding: 100px;
 }
 
-category-container h2{
+.category-container h2{
 	font-family: "Arial";
+}
+
+.category-container ul {
+	display: flex;
+	flex-wrap: wrap;
+	list-style:none;
+	justify-content: space-between;
+	padding: 0px;
+	
+}
+
+.category-container li {
+	background-color: #D9D9D9;
+	width: 200px;
+	height: 200px;
+	margin: 20px 25px;
+}
+
+.hero-container{
+	background-color: #D9D9D9;
+	height: 500px;
+	margin: 0px 100px; 
+}
+
+.about-container{
+	background-color: #D9D9D9;
+	height: 500px;
 }
