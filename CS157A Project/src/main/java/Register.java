@@ -4,7 +4,6 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.sql.*;
-import java.io.*;
 
 /**
  * Servlet implementation class Register

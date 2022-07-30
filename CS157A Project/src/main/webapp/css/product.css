@@ -1,0 +1,103 @@
+.addProduct {
+	display: flex;
+	flex-direction: column;
+	margin: 0px 100px;
+	font-family: "Arial";
+}
+
+.addProduct input{
+	padding: 5px 0px 5px 30px;
+	margin: 10px 0px;;
+	width: 75%;
+	height: 40px;
+	border-style: solid;
+	border-radius: 10px;
+	border-width: 1px;
+	border-color: #AAA8A8;
+	font-family: 'Arial';
+	font-size: 15px;
+}
+
+.addProduct button{
+	margin: 10px 0;
+	width: 82%;
+	height: 40px;
+	border-radius: 10px;
+	border: solid #AAA8A8 1px;
+}
+
+textarea{
+	font-family: "Arial";
+	height: 100px;
+	width: 75%;
+	resize: none;
+	border-radius: 10px;
+	padding: 5px 0px 5px 30px;
+}
+
+.filter-container {
+	padding: 0px 100px;
+}
+
+.filter-container form {
+	display: flex;
+	width: 100%;
+}
+
+
+
+input[type=checkbox]+label {
+	border: solid #D9D9D9 1px;
+	border-radius: 20px;
+	margin: 10px;
+	height: 30px;
+	display: block;
+	width: 500px;
+	font-family: "Arial";
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+}
+
+
+
+input[type=checkbox]:checked+label {
+	background-color: #D9D9D9;
+}
+
+input[type=submit]{
+	border-radius: 20px;
+	border-color: #D9D9D9;
+	border-style: solid;
+	height: 37px;
+	margin: 10px;
+	background-color: #D9D9D9;
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+}
+
+.headerProducts, .yourProducts {
+	padding: 0px 100px;
+	font-family: "Arial";
+}
+
+.product {
+	
+	width: 240px;
+	height: 240px;
+	margin: 20px 0px;
+	padding: 5px;
+}
+
+.product-container {
+	padding: 0px 100px;
+	font-family: "Arial";
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
