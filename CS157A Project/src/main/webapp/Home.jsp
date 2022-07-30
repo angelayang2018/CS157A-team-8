@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,40 +20,66 @@
 			<i class="fas fa-search"></i> <input type="text"
 				placeholder="Search for products or sellers" />
 		</form>
-		<ul class="nav-list">
-			<li><a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a></li>
-			<li><a href="SignIn.jsp">Hello, Sign In</a></li>
-			<li><a href="Products.jsp">Products</a></li>
-			<li><a href="SignUp.jsp"><button>Sign Up</button></a></li>
-		</ul>
+		<div class="nav-list">
+			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a> <a
+				class="hello" href="SignIn.jsp"><span>Hello,</span><span>Sign
+					In</span></a>
+			<div class="dropdown">
+				<a href="Products.jsp">Products</a>
+				<div class="dropdown-content">
+					<a href="YourProduct.jsp">Your Products</a> <a href="Products.jsp">All
+						Products</a>
+				</div>
+			</div>
+			<a href="SignUp.jsp"><button>Sign Up</button></a>
+		</div>
 	</nav>
 
 	<div class="hero-container">
-	<p>hero container</p></div>
+		<img src="images/banner.jpeg" alt="Weed Banner">
+	</div>
 
+<h2>Browse Catgeories</h2>
 	<div class=category-container>
-		<h2>Browse Catgeories</h2>
-		<ul>
-			<li>1</li>
-			<li>2</li>
-			<li>3</li>
-			<li>4</li>
-			<li>5</li>
-			<li>6</li>
-			<li>7</li>
-			<li>8</li>
-		</ul>
+		
+		
+
+			<%
+			String db = "weed";
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				java.sql.Connection con;
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+				System.out.println(db + " database successfully opened. <br>");
+				Statement statement = con.createStatement();
+				// Read row
+				String selectSql = "SELECT categoryName, imagePath FROM Category";
+				ResultSet rs = statement.executeQuery(selectSql);
+				while (rs.next()) {
+					out.print("<div class = container><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1) + "</p></div>");
+					System.out.println(rs.getString(2));
+				}
+				rs.close();
+				statement.close();
+
+			} catch (SQLException e) {
+				System.out.println("SQLException caught: " + e.getMessage());
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			%>
+			
+		
 	</div>
-	
-	<div class = "about-container">
-	
-	</div>
+
+	<div class="about-container"></div>
 
 	<footer>
 		<div class="footer-container">
 			<h1>Weeder</h1>
 
-			<ul class = "contact-info">
+			<ul class="contact-info">
 				<li><i class="fas fa-map-marker-alt"></i>1 Washington Sq, San
 					Jose, CA 95192</li>
 				<li><i class="fas fa-phone"></i>(123)-456-7890</li>
@@ -70,7 +97,7 @@
 		<hr>
 		<div class="copyright">
 			<p>Copyright © 2022 Weeder</p>
-			<p>Made by Dias Mustafin, Swift Sheng, Angela Yang</p>
+			<p>Made by Swift Sheng and Angela Yang</p>
 		</div>
 	</footer>
 
