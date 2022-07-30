@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Weeder</title>
+<link rel="icon" href="images/logo.png" />
 <link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet" href="css/home.css" />
 <link rel="stylesheet"
@@ -13,9 +14,13 @@
 </head>
 <body>
 	<nav>
-		<h1>
-			<a href="Home.jsp">Weeder</a>
-		</h1>
+		<div class="logo-container">
+			<img src="images/logo.png" />
+			<h1>
+				<a href="Home.jsp">Weeder</a>
+			</h1>
+
+		</div>
 		<form>
 			<i class="fas fa-search"></i> <input type="text"
 				placeholder="Search for products or sellers" />
@@ -39,45 +44,52 @@
 		<img src="images/banner.jpeg" alt="Weed Banner">
 	</div>
 
-<h2>Browse Catgeories</h2>
+	<h2>Browse Catgeories</h2>
 	<div class=category-container>
-		
-		
 
-			<%
-			String db = "weed";
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-				java.sql.Connection con;
-				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-				System.out.println(db + " database successfully opened. <br>");
-				Statement statement = con.createStatement();
-				// Read row
-				String selectSql = "SELECT categoryName, imagePath FROM Category";
-				ResultSet rs = statement.executeQuery(selectSql);
-				while (rs.next()) {
-					out.print("<div class = container><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1) + "</p></div>");
-					System.out.println(rs.getString(2));
-				}
-				rs.close();
-				statement.close();
 
-			} catch (SQLException e) {
-				System.out.println("SQLException caught: " + e.getMessage());
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+		<%
+		String db = "weed";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			java.sql.Connection con;
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+			System.out.println(db + " database successfully opened. <br>");
+			Statement statement = con.createStatement();
+			// Read row
+			String selectSql = "SELECT categoryName, imagePath FROM Category";
+			ResultSet rs = statement.executeQuery(selectSql);
+			while (rs.next()) {
+				out.print("<div class = container><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1)
+				+ "</p></div>");
+				System.out.println(rs.getString(2));
 			}
-			%>
-			
-		
+			rs.close();
+			statement.close();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException caught: " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		%>
+
+
 	</div>
 
 	<div class="about-container"></div>
 
 	<footer>
 		<div class="footer-container">
-			<h1>Weeder</h1>
+			<div class="logo-container">
+			<img class = "footerimg" src="images/logo.png" />
+			<h1>
+				<a href="Home.jsp">Weeder</a>
+			</h1>
+
+		</div>
 
 			<ul class="contact-info">
 				<li><i class="fas fa-map-marker-alt"></i>1 Washington Sq, San
