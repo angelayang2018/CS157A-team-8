@@ -53,6 +53,9 @@ public class Register extends HttpServlet {
 
 		} catch (SQLException e) {
 			System.out.println("SQLException caught: " + e.getMessage());
+			dispatcher = request.getRequestDispatcher("/SignUp.jsp");
+			request.setAttribute("status", "failed");
+			dispatcher.forward(request, response);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
