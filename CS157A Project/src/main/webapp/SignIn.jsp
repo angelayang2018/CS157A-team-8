@@ -13,8 +13,10 @@
 	<input type="hidden" id="status"
 		value="<%=request.getAttribute("status")%>">
 	<a href="Home.jsp"><i class="fa fa-arrow-left fa-2x"></i></a>
+	
 	<div class="sign-container">
 		<h1>Weeder</h1>
+		<p id = "errorMessage"></p>
 		<form class="form-container" action=LoginCheck method="post">
 			<p id="sign-header">Login</p>
 			<input type="text" name="username" placeholder="Username" required />
@@ -31,10 +33,9 @@
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script type="text/javascript">
 	var status = document.getElementById("status").value;
-	if (status == "success") {
-		console.log("good");
-	} else if (status == "failed")
-		console.log("bad");
+	if (status == "failed"){
+		document.getElementById("errorMessage").innerHTML = "Wrong Username or Password.";
+		console.log("bad");}
 	else
 		console.log("no good");
 </script>

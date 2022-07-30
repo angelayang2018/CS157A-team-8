@@ -36,6 +36,7 @@ public class LoginCheck extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String db = "weed";
+		RequestDispatcher dispatcher = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			java.sql.Connection con;
@@ -46,12 +47,15 @@ public class LoginCheck extends HttpServlet {
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 
-			String selectSql = "SELECT username FROM weed.Users WHERE username ='" + username + "' AND password = '"
-					+ password + "';";
+			String selectSql = "SELECT * FROM weed.Users WHERE username ='" + username + "' AND password = '" + password
+					+ "';";
 			ResultSet rs = stmt.executeQuery(selectSql);
-			if (rs.next() == false)
-				response.sendRedirect("Error.jsp");
-			else
+			if (rs.next() == false) {
+				dispatcher = request.getRequestDispatcher("/SignIn.jsp");
+				request.setAttribute("status", "failed");
+				dispatcher.forward(request, response);
+				// response.sendRedirect("SignIn.jsp");
+			} else
 				response.sendRedirect("Home.jsp");
 
 			con.close();

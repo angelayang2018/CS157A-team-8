@@ -12,10 +12,14 @@
 <link rel="stylesheet" href="css/sign.css" />
 </head>
 <body>
+	<input type="hidden" id="status"
+		value="<%=request.getAttribute("status")%>">
 	<a href="Home.jsp"><i class="fa fa-arrow-left fa-2x"></i></a>
 
+	
 	<div class="sign-container">
 		<h1>Weeder</h1>
+		<p id="errorMessage"></p>
 		<form class="form-container" action="register" method="post">
 			<p id="sign-header">Sign Up</p>
 			<input type="text" name="first_name" placeholder="First Name"
@@ -40,5 +44,13 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
 	>
+</script>
+<script type="text/javascript">
+	var status = document.getElementById("status").value;
+	 if (status == "failed"){
+		 document.getElementById("errorMessage").innerHTML = "Username Taken.";
+		console.log("bad");
+	 }
+	
 </script>
 </html>

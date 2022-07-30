@@ -2,15 +2,18 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <!DOCTYPE html>
+<% 
+String username;
+%>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Weeder</title>
 <link rel="icon" href="images/logo.png" />
 <link rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet" href="css/home.css" />
 <link rel="stylesheet"
 	href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+<link rel="stylesheet" href="css/home.css" />
 </head>
 <body>
 	<nav>
@@ -42,9 +45,14 @@
 
 	<div class="hero-container">
 		<img src="images/banner.jpeg" alt="Weed Banner">
+		<div>
+			<h2>Love and Peace</h2>
+			<p>Get some Weed</p>
+			<a href="Products.jsp"><button>Shop Now</button></a>
+		</div>
 	</div>
 
-	<h2>Browse Catgeories</h2>
+	<h2 class="browseHeader">Browse Catgeories</h2>
 	<div class=category-container>
 
 
@@ -63,7 +71,6 @@
 			while (rs.next()) {
 				out.print("<div class = container><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1)
 				+ "</p></div>");
-				System.out.println(rs.getString(2));
 			}
 			rs.close();
 			statement.close();
@@ -79,17 +86,27 @@
 
 	</div>
 
-	<div class="about-container"></div>
+	<div class="about-container">
+		<img src="images/paperWeed.jpg" />
+		<div class="aboutInfo">
+			<h2>Join a thriving community of cannibis consumers and
+				retailers.</h2>
+			<div>
+				<a href="SignIn.jsp"><button>Sign In</button></a> <a
+					href="SignUp.jsp"><button>Sign Up</button></a>
+			</div>
+		</div>
+	</div>
 
 	<footer>
 		<div class="footer-container">
 			<div class="logo-container">
-			<img class = "footerimg" src="images/logo.png" />
-			<h1>
-				<a href="Home.jsp">Weeder</a>
-			</h1>
+				<img class="footerimg" src="images/logo.png" />
+				<h1>
+					<a href="Home.jsp">Weeder</a>
+				</h1>
 
-		</div>
+			</div>
 
 			<ul class="contact-info">
 				<li><i class="fas fa-map-marker-alt"></i>1 Washington Sq, San
@@ -99,10 +116,12 @@
 			</ul>
 
 			<ul>
-				<li>Products</li>
-				<li>Sign In</li>
-				<li>Sign Up</li>
-				<li>Your Cart</li>
+				<li><a href="YourProduct.jsp">Your Products</a></li>
+				<li><a href="Profile.jsp">Your Profile</a></li>
+				<li><a href="Products.jsp">Products</a></li>
+				<li><a href="SignIn.jsp">Sign In</a></li>
+				<li><a href="SignUp.jsp">Sign Up</a></li>
+				<li><a href="ShoppingCart.jsp">Your Cart</a></li>
 			</ul>
 
 		</div>
