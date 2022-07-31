@@ -30,8 +30,8 @@
 				name="username" placeholder="Username" required /> <input
 				type="password" name="password" placeholder="Password" required />
 			<div class="agecheck-container">
-				<input type="checkbox" id="age_check" name="age_check" /> <label
-					for="age_check">I agree to the Terms of Service and I
+				<input type="checkbox" id="age_check" name="age_check" required /> <label
+					for="age_check" >I agree to the Terms of Service and I
 					verify that I am 21 years or older.</label>
 			</div>
 			<button>Register</button>

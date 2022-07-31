@@ -39,15 +39,20 @@
 			<div class="dropdown">
 				<a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
-					<a href="YourProduct.jsp">Your Products</a> <a href="Products.jsp">All
-						Products</a>
+					<a
+						href="<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("YourProduct.jsp");%>">Your
+						Products</a> <a href="Products.jsp">All Products</a>
 				</div>
 			</div>
 			<%
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
-				out.print("<form method = post action = logOut><input type = \"submit\" value = \"Log Out\"></input></form>");
+				out.print("<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
+				
 			}
 			%>
 		</div>
@@ -63,12 +68,18 @@
 			list="category" name="category" placeholder="Category">
 		<datalist id="category">
 			<option value="Flower">
-			<option value="Edibles">
+				<option value="Edibles">
+			
 			<option value="Concentrates">
+			
 			<option value="Topicals">
+			
 			<option value="Pre-Roll">
+			
 			<option value="CBD">
+			
 			<option value="Plants and Seeds">
+		
 		</datalist>
 		<button>Add Product</button>
 	</form>
@@ -87,7 +98,7 @@
 			System.out.println(db + " database successfully opened. <br>");
 			Statement statement = con.createStatement();
 			// Read row
-			String selectSql = "SELECT * FROM Products";
+			String selectSql = "SELECT * FROM Products WHERE sellerName = \"" + session.getAttribute("currentUser") + "\";";
 			ResultSet rs = statement.executeQuery(selectSql);
 			//statement = con.createStatement();
 			// Read row
@@ -146,8 +157,7 @@
 </body>
 <script type="text/javascript">
 	document.getElementById("logOut").addEventListener("click", function() {
-		 session.setAttribute("currentUser", null); 
-	}) 
-</script>
-
-</html>
+		session.setAttribute("currentUser", null);
+	})
+</script></
+			html>

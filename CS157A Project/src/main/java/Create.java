@@ -22,6 +22,9 @@ public class Create extends HttpServlet {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
 			System.out.println(db + " database successfully opened. <br>");
 			Statement stmt = con.createStatement();
+			
+			HttpSession session = request.getSession();
+			String username = (String) session.getAttribute("currentUser");
 
 			String title = request.getParameter("product_title");
 			String description = request.getParameter("product_description");
@@ -29,8 +32,8 @@ public class Create extends HttpServlet {
 			String price = request.getParameter("price");
 			String category = request.getParameter("category");
 
-			String insertSql = "INSERT INTO Products (title, description, quantity, price, category) VALUES ('"
-					+ title + "', '" + description + "', '" + quantity + "', '" + price + "', '" + category  + "')";
+			String insertSql = "INSERT INTO Products (title, description, quantity, price, category, sellerName) VALUES ('"
+					+ title + "', '" + description + "', '" + quantity + "', '" + price + "', '" + category  + "', '" + username + "')";
 			stmt.executeUpdate(insertSql);
 			
 			response.sendRedirect("Products.jsp");

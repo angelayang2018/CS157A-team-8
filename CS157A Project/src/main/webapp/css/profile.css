@@ -10,6 +10,28 @@
 	border-radius: 4px;
 }
 
+.profile-container form{
+	display: flex;
+	flex-direction: column;
+}
+
+.profile-container input{
+	padding: 5px 0px 5px 30px;
+	margin: 10px;
+	width: 75%;
+	height: 30px;
+	border-style: solid;
+	border-radius: 10px;
+	border-width: 1px;
+	border-color: #AAA8A8;
+	font-family: 'Arial';
+	font-size: 15px;
+}
+
+.edit-container p{
+	padding-right: 10px;
+}
+
 .infoContainer{
 	display: flex;
 	flex-direction: column;

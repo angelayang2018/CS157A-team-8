@@ -39,57 +39,68 @@
 			<div class="dropdown">
 				<a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
-					<a href="YourProduct.jsp">Your Products</a> <a href="Products.jsp">All
-						Products</a>
+					<a
+						href="<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("YourProduct.jsp");%>">Your
+						Products</a> <a href="Products.jsp">All Products</a>
 				</div>
 			</div>
 			<%
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
-				out.print("<a href=\"Home.jsp\"><button id = \"logOut\">Log Out</button></a>");
+				out.print(
+				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
+
 			}
 			%>
 		</div>
 	</nav>
 
 	<div class="profile-container">
-	<h1>Manage Your Profile</h1>
-		<%
-		String db = "weed";
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			java.sql.Connection con;
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-			System.out.println(db + " database successfully opened. <br>");
-			Statement statement = con.createStatement();
-			// Read row
-			String selectSql = "SELECT* FROM Users WHERE username = \"" + session.getAttribute("currentUser") + "\";";
-			ResultSet rs = statement.executeQuery(selectSql);
-			String[] fieldNames = { "First Name", "Last Name", "Username", "Password", "Phone", "Email" };
-			if(rs.next())
-			for (int i = 1; i <= 6; i++) {
-				if(i%2 == 0){
-				out.print("<div class = infoContainer><h3>" + fieldNames[i - 1] + "</h3><div class = info><p>" + rs.getString(i)
-				+ "</p><i class=\"fas fa-edit\"></i></div></div>");
-				}else{
-					out.print("<div class = \"infoContainer colored\"><h3>" + fieldNames[i - 1] + "</h3><div class = info><p>" + rs.getString(i)
-					+ "</p><i class=\"fas fa-edit\"></i></div></div>");
-					
+		<h1>Manage Your Profile</h1>
+
+		<button id="edit">
+			Edit <i class="fas fa-edit"></i>
+		</button>
+
+		<form method = "post" action = "UpdateProfile">
+			<%
+			String db = "weed";
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				java.sql.Connection con;
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+				System.out.println(db + " database successfully opened. <br>");
+				Statement statement = con.createStatement();
+				// Read row
+				String selectSql = "SELECT* FROM Users WHERE username = \"" + session.getAttribute("currentUser") + "\";";
+				ResultSet rs = statement.executeQuery(selectSql);
+				String[] fieldNames = {"First Name", "Last Name", "Username", "Password", "Phone", "Email"};
+				if (rs.next())
+					for (int i = 1; i <= 6; i++) {
+				if (i % 2 == 0) {
+					out.print("<div class = infoContainer><h3>" + fieldNames[i - 1] + "</h3><p id = " + fieldNames[i - 1]
+							+ ">" + rs.getString(i) + "</p></div>");
+				} else {
+					out.print("<div class = \"infoContainer colored\"><h3>" + fieldNames[i - 1] + "</h3><p id = "
+							+ fieldNames[i - 1] + ">" + rs.getString(i) + "</p></div>");
+
 				}
+					}
+
+			} catch (SQLException e) {
+				System.out.println("SQLException caught: " + e.getMessage());
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-		} catch (SQLException e) {
-			System.out.println("SQLException caught: " + e.getMessage());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		%>
-
-
+			%>
+			<input type=submit value="Save Changes" />
+		</form>
 	</div>
-
 
 	<footer>
 		<div class="footer-container">
@@ -126,8 +137,21 @@
 	</footer>
 </body>
 <script type="text/javascript">
-	document.getElementById("logOut").addEventListener("click", function() {
-		 session.setAttribute("currentUser", null); 
-	}) 
+	document.getElementById("edit").addEventListener(
+			"click",
+			function() {
+				const ids = [ "First", "Last", "Username", "Password", "Phone",
+						"Email" ];
+				for (let i = 0; i < ids.length; i++) {
+					var info = document.getElementById(ids[i]);
+					var newInput = document.createElement("input");
+					newInput.setAttribute("required", true);
+					newInput.setAttribute("name", ids[i]);
+					if (i == ids.length - 1)
+						newInput.type = "email";
+					newInput.value = info.innerHTML;
+					info.parentNode.replaceChild(newInput, info);
+				}
+			})
 </script>
 </html>

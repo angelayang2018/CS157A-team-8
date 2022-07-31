@@ -37,15 +37,20 @@
 			<div class="dropdown">
 				<a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
-					<a href="YourProduct.jsp">Your Products</a> <a href="Products.jsp">All
-						Products</a>
+					<a
+						href="<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("YourProduct.jsp");%>">Your
+						Products</a> <a href="Products.jsp">All Products</a>
 				</div>
 			</div>
 			<%
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
-				out.print("<a href=\"Home.jsp\"><button id = \"logOut\">Log Out</button></a>");
+				out.print("<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
+				
 			}
 			%>
 		</div>
