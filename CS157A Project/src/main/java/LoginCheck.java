@@ -55,8 +55,11 @@ public class LoginCheck extends HttpServlet {
 				request.setAttribute("status", "failed");
 				dispatcher.forward(request, response);
 				// response.sendRedirect("SignIn.jsp");
-			} else
+			} else {
+				HttpSession session = request.getSession();
+				session.setAttribute("currentUser", username);
 				response.sendRedirect("Home.jsp");
+			}
 
 			con.close();
 		} catch (SQLException e) {

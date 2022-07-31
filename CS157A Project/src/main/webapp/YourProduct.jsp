@@ -26,9 +26,16 @@
 				placeholder="Search for products or sellers" />
 		</form>
 		<div class="nav-list">
-			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a> <a
-				class="hello" href="SignIn.jsp"><span>Hello,</span><span>Sign
-					In</span></a>
+			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a>
+
+			<%
+			if (session.getAttribute("currentUser") != null) {
+				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
+				+ session.getAttribute("currentUser") + "</span>");
+			} else
+				out.print("<a class = \"hello\" href = \"SignIn.jsp\"><span>Hello,</span><span>Sign In</span>");
+			%>
+
 			<div class="dropdown">
 				<a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
@@ -36,7 +43,13 @@
 						Products</a>
 				</div>
 			</div>
-			<a href="SignUp.jsp"><button>Sign Up</button></a>
+			<%
+			if (session.getAttribute("currentUser") == null)
+				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
+			else {
+				out.print("<form method = post action = logOut><input type = \"submit\" value = \"Log Out\"></input></form>");
+			}
+			%>
 		</div>
 	</nav>
 
@@ -131,5 +144,10 @@
 		</div>
 	</footer>
 </body>
+<script type="text/javascript">
+	document.getElementById("logOut").addEventListener("click", function() {
+		 session.setAttribute("currentUser", null); 
+	}) 
+</script>
 
 </html>

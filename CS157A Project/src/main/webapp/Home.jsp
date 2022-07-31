@@ -2,9 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <!DOCTYPE html>
-<% 
-String username;
-%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -16,6 +13,7 @@ String username;
 <link rel="stylesheet" href="css/home.css" />
 </head>
 <body>
+<input type = "hidden" name = "hide" id = "hide" value = "test">
 	<nav>
 		<div class="logo-container">
 			<img src="images/logo.png" />
@@ -29,9 +27,16 @@ String username;
 				placeholder="Search for products or sellers" />
 		</form>
 		<div class="nav-list">
-			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a> <a
-				class="hello" href="SignIn.jsp"><span>Hello,</span><span>Sign
-					In</span></a>
+			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a>
+
+			<%
+			if (session.getAttribute("currentUser") != null) {
+				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
+				+ session.getAttribute("currentUser") + "</span>");
+			} else
+				out.print("<a class = \"hello\" href = \"SignIn.jsp\"><span>Hello,</span><span>Sign In</span>");
+			%>
+
 			<div class="dropdown">
 				<a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
@@ -39,7 +44,13 @@ String username;
 						Products</a>
 				</div>
 			</div>
-			<a href="SignUp.jsp"><button>Sign Up</button></a>
+			<%
+			if (session.getAttribute("currentUser") == null)
+				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
+			else {
+				out.print("<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
+			}
+			%>
 		</div>
 	</nav>
 

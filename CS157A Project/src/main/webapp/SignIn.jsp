@@ -33,7 +33,9 @@
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script type="text/javascript">
 	var status = document.getElementById("status").value;
-	if (status == "failed"){
+	if(status == "success"){
+		document.getElementById("errorMessage").innerHTML = "Account successfully created.";
+	}else if (status == "failed"){
 		document.getElementById("errorMessage").innerHTML = "Wrong Username or Password.";
 		console.log("bad");}
 	else
