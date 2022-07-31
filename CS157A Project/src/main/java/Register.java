@@ -45,6 +45,7 @@ public class Register extends HttpServlet {
 		
 			if (rows > 0) {
 			request.setAttribute("status", "success");
+			System.out.println("hello");
 			}else request.setAttribute("status", "failed");
 			
 			dispatcher.forward(request, response);
