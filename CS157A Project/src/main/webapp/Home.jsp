@@ -40,8 +40,12 @@
 			<div class="dropdown">
 				<a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
-					<a href="YourProduct.jsp">Your Products</a> <a href="Products.jsp">All
-						Products</a>
+					<a
+						href="<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("YourProduct.jsp");%>">Your
+						Products</a> <a href="Products.jsp">All Products</a>
 				</div>
 			</div>
 			<%

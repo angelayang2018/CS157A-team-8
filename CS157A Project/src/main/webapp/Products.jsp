@@ -39,15 +39,20 @@
 			<div class="dropdown">
 				<a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
-					<a href="YourProduct.jsp">Your Products</a> <a href="Products.jsp">All
-						Products</a>
+					<a
+						href="<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("YourProduct.jsp");%>">Your
+						Products</a> <a href="Products.jsp">All Products</a>
 				</div>
 			</div>
 			<%
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
-				out.print("<a href=\"Home.jsp\"><button id = \"logOut\">Log Out</button></a>");
+				out.print("<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
+				
 			}
 			%>
 		</div>
@@ -88,7 +93,7 @@
 		while (rs.next()) {
 
 			out.println("<div class = product>" + "<h1>" + rs.getInt(1) + "</h1>");
-			for (int i = 2; i <= 6; i++) {
+			for (int i = 2; i <= 7; i++) {
 				out.println("<p>" + rs.getString(i) + "</p>");
 			}
 			out.println("</div>");
