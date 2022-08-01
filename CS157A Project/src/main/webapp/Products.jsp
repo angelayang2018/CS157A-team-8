@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
+<%@ page import="java.net.*"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,14 +88,35 @@ else
 	</div>
 	<div class="product-container">
 		<%
-		//statement = con.createStatement();
-		// Read row
-		selectSql = "SELECT * FROM Products";
+		/*StringBuffer requestURL = request.getRequestURL();
+		if (request.getQueryString() != null) {
+		    requestURL.append("?").append(request.getQueryString());
+		}
+		String completeURL = requestURL.toString();
+		System.out.println(completeURL);
+		
+		String query = request.getQueryString();
+		System.out.println(query);*/
+		
+		
+		String category = request.getParameter("category");
+		String search = request.getParameter("search");
+		System.out.println(category);
+		//System.out.println(search);
+		
+        
+		
+		
+		
+		
+		if(category != null){
+			selectSql = "SELECT * FROM Products WHERE category = '" + category + "';"; 
+		}else selectSql = "SELECT * FROM Products";
 		rs = statement.executeQuery(selectSql);
 		while (rs.next()) {
 
-			out.println("<div class = product>" + "<h1>" + rs.getInt(1) + "</h1>");
-			for (int i = 2; i <= 7; i++) {
+			out.println("<div class = product>" + "<h1>" + rs.getString(2) + "</h1>");
+			for (int i = 3; i <= 7; i++) {
 				out.println("<p>" + rs.getString(i) + "</p>");
 			}
 			out.println("</div>");
@@ -104,7 +127,6 @@ else
 		} catch (SQLException e) {
 		System.out.println("SQLException caught: " + e.getMessage());
 		} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 		}
 		%>
@@ -143,10 +165,4 @@ else
 		</div>
 	</footer>
 </body>
-<script type="text/javascript">
-	document.getElementById("logOut").addEventListener("click", function() {
-		 session.setAttribute("currentUser", null); 
-	}) 
-</script>
-
 </html>

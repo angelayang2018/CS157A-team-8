@@ -84,8 +84,8 @@ else
 			String selectSql = "SELECT categoryName, imagePath FROM Category";
 			ResultSet rs = statement.executeQuery(selectSql);
 			while (rs.next()) {
-				out.print("<div class = container><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1)
-				+ "</p></div>");
+				out.print("<div class = container><a href = \"Products.jsp?category=" + rs.getString(1) +"\"><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1)
+				+ "</p></a></div>");
 			}
 			rs.close();
 			statement.close();
