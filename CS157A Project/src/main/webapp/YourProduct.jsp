@@ -58,7 +58,6 @@ else
 			%>
 		</div>
 	</nav>
-
 	<form class="addProduct" action="Create" method="post">
 		<h1>Add Your Product</h1>
 		<input type="text" name="product_title" placeholder="Product Title"
@@ -83,53 +82,69 @@ else
 		<h1>Your Products</h1>
 	</div>
 
+	
 	<div class="product-container">
-		<table>
-			<tr>
-			<th class = "colored">Product ID</th>
-				<th>Title</th>
-				<th class = "colored">Description</th>
-				<th>Quantity</th>
-				<th class = "colored">Price</th>
-				<th>Category</th>
-			</tr>
-			<%
-			String db = "weed";
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-				java.sql.Connection con;
-				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-				System.out.println(db + " database successfully opened. <br>");
-				Statement statement = con.createStatement();
-				// Read row
-				String selectSql = "SELECT * FROM Products WHERE sellerName = \"" + session.getAttribute("currentUser") + "\";";
-				ResultSet rs = statement.executeQuery(selectSql);
-				//statement = con.createStatement();
-				// Read row
+		<%
+		String db = "weed";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			java.sql.Connection con;
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+			System.out.println(db + " database successfully opened. <br>");
+			Statement statement = con.createStatement();
+			// Read row
+			String selectSql = "SELECT * FROM Products WHERE sellerName = \"" + session.getAttribute("currentUser") + "\";";
+			ResultSet rs = statement.executeQuery(selectSql);
+			//statement = con.createStatement();
+			// Read row
+			if (!rs.isBeforeFirst()) {
+				out.println("<p>You have no products currently.</p>");
+			} else {
+				out.println("<form method = \"post\" action = \"UpdateProduct\">");
+				out.println("<input id = check name = check type = hidden />");
+				out.println(
+				"<table><tr><th class=\"colored\">Product ID</th><th>Title</th><th class=\"colored\">Description</th><th>Quantity</th><th class=\"colored\">Price</th><th>Category</th></tr>");
 				while (rs.next()) {
-					out.println("<tr>");
-					for (int i = 1; i <= 6; i++) {
-						if(i % 2 == 0)
-				out.println("<td>" + rs.getString(i) + "</td>");
-						else 
-							out.println("<td class = lightColored>" + rs.getString(i) + "</td>");
-					}
-					out.println("<td class = noBorder><form><input type = submit value = Edit></form></td>");
-					out.println("<td class = noBorder><form method = \"post\" action = \"Delete\"><button name = delete type = submit value ='" + rs.getString(1) + "' >Delete</button></form></td>");
-					out.println("</tr>");
-				}
-				rs.close();
-				statement.close();
+			out.println("<tr>");
 
-			} catch (SQLException e) {
-				System.out.println("SQLException caught: " + e.getMessage());
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			String[] header = {"productId", "title", "description", "quantity", "price", "category"};
+			for (int i = 1; i <= 6; i++) {
+
+				if (i % 2 == 0)
+					out.println("<td id = \"" + header[i - 1] + rs.getString(1) + "\">" + rs.getString(i) + "</td>");
+				else
+					out.println("<td id = \"" + header[i - 1] + rs.getString(1) + "\" class = lightColored>"
+							+ rs.getString(i) + "</td>");
+
 			}
-			%>
-		</table>
+			out.println("<td class = noBorder><button type = button id = \"" + rs.getString(1)
+					+ "\" onClick = \"editClicked(this.id)\">Edit</button></td>");
+			out.println("<td class = \"noBorder hidden\" id = \"saveContainer" + rs.getString(1)
+					+ "\"><button class = hidden name = save value = \"" + rs.getString(1) + "\"onClick = changeCheck(this.value) type = submit id = \"save" + rs.getString(1)
+					+ "\">Save</button></td>");
+			out.println("<td class = \"noBorder hidden\" id = \"cancelContainer" + rs.getString(1)
+					+ "\"><a href = YourProduct.jsp><button class = \"hidden type\" = button id = \"cancel"
+					+ rs.getString(1) + "\">Cancel</button></a></td>");
+
+			out.println("<td class = noBorder><button id = \"delete" + rs.getString(1)
+					+ "\" name = delete type = submit value ='" + rs.getString(1) + "' >Delete</button></td>");
+			out.println("</tr>");
+				}
+				out.println("</table>");
+				out.println("</form>");
+			}
+			rs.close();
+			statement.close();
+
+		} catch (SQLException e) {
+			System.out.println("SQLException caught: " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		%>
 	</div>
+
 	<footer>
 		<div class="footer-container">
 			<div class="logo-container">
@@ -163,5 +178,46 @@ else
 			<p>Made by Swift Sheng and Angela Yang</p>
 		</div>
 	</footer>
+
 </body>
+<script type="text/javascript">
+	function editClicked(clicked_id) {
+		const ids = [ "productId", "title", "description", "quantity", "price",
+				"category" ];
+		for (let i = 0; i < ids.length; i++) {
+			var info = document.getElementById(ids[i] + clicked_id);
+			var newInput = document.createElement("input");
+			newInput.setAttribute("required", true);
+			newInput.setAttribute("name", ids[i] + clicked_id);
+			newInput.setAttribute("id", ids[i] + clicked_id);
+			if(i == 0) newInput.setAttribute("readonly", true);
+			newInput.value = info.innerHTML;
+			info.innerHTML = "";
+			info.append(newInput);
+
+			var edit = document.getElementById(clicked_id);
+			var save = document.getElementById("save" + clicked_id);
+			var saveC = document.getElementById("saveContainer" + clicked_id);
+			var cancel = document.getElementById("cancel" + clicked_id);
+			var cancelC = document.getElementById("cancelContainer"
+					+ clicked_id);
+			var deleteB = document.getElementById("delete" + clicked_id);
+			edit.classList.add("hidden");
+			deleteB.classList.add("hidden");
+			save.classList.remove("hidden");
+			cancel.classList.remove("hidden");
+			saveC.classList.remove("hidden");
+			cancelC.classList.remove("hidden");
+
+		}
+	}
+	
+	function changeCheck(value){
+		var check = document.getElementById("check");
+		console.log(value);
+		check.value = value;
+		
+		
+	}
+</script>
 </html>

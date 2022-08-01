@@ -166,8 +166,7 @@ else
 					info.parentNode.replaceChild(newInput, info);
 				}
 			})
-</script>
-<script type="text/javascript">
+
 	var status = document.getElementById("status").value;
 	if (status == "success") {
 		document.getElementById("errorMessage").innerHTML = "Changes saved successfully.";
