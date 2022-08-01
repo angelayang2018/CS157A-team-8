@@ -1,3 +1,5 @@
+
+
 import java.io.IOException;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
@@ -5,11 +7,26 @@ import jakarta.servlet.http.*;
 import java.sql.*;
 
 /**
- * Servlet implementation class Create
+ * Servlet implementation class Delete
  */
-@WebServlet("/Create")
-public class Create extends HttpServlet {
+@WebServlet("/Delete")
+public class Delete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+    /**
+     * Default constructor. 
+     */
+    public Delete() {
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -22,19 +39,11 @@ public class Create extends HttpServlet {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
 			System.out.println(db + " database successfully opened. <br>");
 			Statement stmt = con.createStatement();
-			
-			HttpSession session = request.getSession();
-			String username = (String) session.getAttribute("currentUser");
 
-			String title = request.getParameter("product_title");
-			String description = request.getParameter("product_description");
-			String quantity = request.getParameter("quantity");
-			String price = request.getParameter("price");
-			String category = request.getParameter("category");
+			String id = request.getParameter("delete");
 
-			String insertSql = "INSERT INTO Products (title, description, quantity, price, category, sellerName) VALUES ('"
-					+ title + "', '" + description + "', '" + quantity + "', '" + price + "', '" + category  + "', '" + username + "')";
-			stmt.executeUpdate(insertSql);
+			String deleteSql = "DELETE FROM Products WHERE product_id = '" + id + "';" ;
+			stmt.executeUpdate(deleteSql);
 			
 			response.sendRedirect("YourProduct.jsp");
 

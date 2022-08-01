@@ -58,15 +58,21 @@ else
 			%>
 		</div>
 	</nav>
-
+	<input type="hidden" id="status"
+		value="<%=request.getAttribute("status")%>">
 	<div class="profile-container">
 		<h1>Manage Your Profile</h1>
+		<p id="errorMessage"></p>
+		<div class="edit-container">
 
-		<button id="edit">
-			Edit <i class="fas fa-edit"></i>
-		</button>
-
-		<form method = "post" action = "UpdateProfile">
+			<button id="edit">
+				Edit <i class="fas fa-edit"></i>
+			</button>
+			<a href="Profile.jsp">
+				<button id="cancel" class="hidden">Cancel</button>
+			</a>
+		</div>
+		<form method="post" action="UpdateProfile">
 			<%
 			String db = "weed";
 			try {
@@ -98,7 +104,8 @@ else
 				e.printStackTrace();
 			}
 			%>
-			<input type=submit value="Save Changes" />
+			<input type=submit value="Save Changes" id="saveChanges"
+				class="hidden" />
 		</form>
 	</div>
 
@@ -140,6 +147,12 @@ else
 	document.getElementById("edit").addEventListener(
 			"click",
 			function() {
+				var saveChange = document.getElementById("saveChanges");
+				var cancel = document.getElementById("cancel");
+				var edit = document.getElementById("edit");
+				edit.classList.add("hidden");
+				saveChange.classList.remove("hidden");
+				cancel.classList.remove("hidden");
 				const ids = [ "First", "Last", "Username", "Password", "Phone",
 						"Email" ];
 				for (let i = 0; i < ids.length; i++) {
@@ -153,5 +166,15 @@ else
 					info.parentNode.replaceChild(newInput, info);
 				}
 			})
+</script>
+<script type="text/javascript">
+	var status = document.getElementById("status").value;
+	if (status == "success") {
+		document.getElementById("errorMessage").innerHTML = "Changes saved successfully.";
+	} else if (status == "failed") {
+		document.getElementById("errorMessage").innerHTML = "Username is taken.";
+		console.log("bad");
+	} else
+		console.log("no good");
 </script>
 </html>

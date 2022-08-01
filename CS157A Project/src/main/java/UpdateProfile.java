@@ -61,14 +61,15 @@ public class UpdateProfile extends HttpServlet {
 			dispatcher = request.getRequestDispatcher("/Profile.jsp");
 			// returns the number of rows affected
 			int rows = stmt.executeUpdate(updateSql);
-			if (!username.equals(currentUser)) {
-				updateSql = "UPDATE Products SET sellerName = '" + username + "' WHERE sellerName = + '" + currentUser
-						+ "';";
-				stmt.execute(updateSql);
-				session.setAttribute("currentUser", username);
-			}
+			
 			if (rows > 0) {
 				request.setAttribute("status", "success");
+				if (!username.equals(currentUser)) {
+					updateSql = "UPDATE Products SET sellerName = '" + username + "' WHERE sellerName = + '" + currentUser
+							+ "';";
+					stmt.execute(updateSql);
+					session.setAttribute("currentUser", username);
+				}
 
 			} else
 				request.setAttribute("status", "failed");
@@ -79,7 +80,7 @@ public class UpdateProfile extends HttpServlet {
 
 		} catch (SQLException e) {
 			System.out.println("SQLException caught: " + e.getMessage());
-			dispatcher = request.getRequestDispatcher("/SignUp.jsp");
+			dispatcher = request.getRequestDispatcher("/Profile.jsp");
 			request.setAttribute("status", "failed");
 			dispatcher.forward(request, response);
 		} catch (ClassNotFoundException e) {

@@ -51,8 +51,9 @@ else
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
-				out.print("<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
-				
+				out.print(
+				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
+
 			}
 			%>
 		</div>
@@ -68,18 +69,12 @@ else
 			list="category" name="category" placeholder="Category">
 		<datalist id="category">
 			<option value="Flower">
-				<option value="Edibles">
-			
+			<option value="Edibles">
 			<option value="Concentrates">
-			
 			<option value="Topicals">
-			
 			<option value="Pre-Roll">
-			
 			<option value="CBD">
-			
 			<option value="Plants and Seeds">
-		
 		</datalist>
 		<button>Add Product</button>
 	</form>
@@ -89,37 +84,51 @@ else
 	</div>
 
 	<div class="product-container">
-		<%
-		String db = "weed";
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			java.sql.Connection con;
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-			System.out.println(db + " database successfully opened. <br>");
-			Statement statement = con.createStatement();
-			// Read row
-			String selectSql = "SELECT * FROM Products WHERE sellerName = \"" + session.getAttribute("currentUser") + "\";";
-			ResultSet rs = statement.executeQuery(selectSql);
-			//statement = con.createStatement();
-			// Read row
-			while (rs.next()) {
-
-				out.println("<div class = product>" + "<h1>" + rs.getInt(1) + "</h1>");
-				for (int i = 2; i <= 6; i++) {
-			out.println("<p>" + rs.getString(i) + "</p>");
+		<table>
+			<tr>
+			<th class = "colored">Product ID</th>
+				<th>Title</th>
+				<th class = "colored">Description</th>
+				<th>Quantity</th>
+				<th class = "colored">Price</th>
+				<th>Category</th>
+			</tr>
+			<%
+			String db = "weed";
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				java.sql.Connection con;
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+				System.out.println(db + " database successfully opened. <br>");
+				Statement statement = con.createStatement();
+				// Read row
+				String selectSql = "SELECT * FROM Products WHERE sellerName = \"" + session.getAttribute("currentUser") + "\";";
+				ResultSet rs = statement.executeQuery(selectSql);
+				//statement = con.createStatement();
+				// Read row
+				while (rs.next()) {
+					out.println("<tr>");
+					for (int i = 1; i <= 6; i++) {
+						if(i % 2 == 0)
+				out.println("<td>" + rs.getString(i) + "</td>");
+						else 
+							out.println("<td class = lightColored>" + rs.getString(i) + "</td>");
+					}
+					out.println("<td class = noBorder><form><input type = submit value = Edit></form></td>");
+					out.println("<td class = noBorder><form method = \"post\" action = \"Delete\"><button name = delete type = submit value ='" + rs.getString(1) + "' >Delete</button></form></td>");
+					out.println("</tr>");
 				}
-				out.println("</div>");
-			}
-			rs.close();
-			statement.close();
+				rs.close();
+				statement.close();
 
-		} catch (SQLException e) {
-			System.out.println("SQLException caught: " + e.getMessage());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		%>
+			} catch (SQLException e) {
+				System.out.println("SQLException caught: " + e.getMessage());
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			%>
+		</table>
 	</div>
 	<footer>
 		<div class="footer-container">
@@ -155,9 +164,4 @@ else
 		</div>
 	</footer>
 </body>
-<script type="text/javascript">
-	document.getElementById("logOut").addEventListener("click", function() {
-		session.setAttribute("currentUser", null);
-	})
-</script></
-			html>
+</html>
