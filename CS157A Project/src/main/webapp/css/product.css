@@ -36,6 +36,9 @@ textarea{
 	padding: 5px 0px 5px 30px;
 }
 
+.product-container form{
+	width: 100%;
+}
 .filter-container {
 	margin: 100px 0px;
 	padding: 0px 100px;
@@ -101,6 +104,11 @@ th, td {
 	
 }
 
+td input{
+	width: 95%;
+}
+
+
 .noBorder{
 	border: none;
 	max-width: 10px;
@@ -129,6 +137,10 @@ table{
 	padding: 20px 5px;
 }
 
+.hidden{
+	display:none;
+	
+}
 .product-container {
 	padding: 0px 100px;
 	font-family: "Arial";
@@ -136,3 +148,4 @@ table{
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
+
