@@ -1,11 +1,12 @@
 
 .profile-container{
+	
 	font-family: "Arial";	
 	border: solid  #c1c1c1 1px;
+	margin: 150px 400px 0px 400px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin: 0px 400px;
 	padding: 10px 0;
 	border-radius: 4px;
 }
@@ -13,6 +14,8 @@
 .profile-container form{
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .profile-container input{
@@ -29,7 +32,8 @@
 }
 
 .edit-container p{
-	padding-right: 10px;
+	display: flex;
+	justify-content: center;
 }
 
 .infoContainer{
@@ -39,6 +43,7 @@
 	border-radius: 20px;
 	padding: 10px;
 	border: solid #f0f1f1 1px;
+	height: 100px;
 }
 
 .info{
@@ -47,10 +52,31 @@
 	align-items: center;
 }
 
+button#edit, button#cancel{
+	margin-bottom: 30px;
+	
+}
+
 .info i{
 	padding-left: 10px;
 }
 
 .colored{
 	background-color: #f0f1f1;
+}
+
+p#errorMessage{
+	color: red;
+}
+
+.hidden{
+	display: none;
+	visibility: hidden;
+}
+
+#saveChanges{
+	margin: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

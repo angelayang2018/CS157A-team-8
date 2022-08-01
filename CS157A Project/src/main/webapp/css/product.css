@@ -1,8 +1,9 @@
 .addProduct {
 	display: flex;
 	flex-direction: column;
-	margin: 0px 100px;
+	margin: 150px 100px 0px 100px;
 	font-family: "Arial";
+	
 }
 
 .addProduct input{
@@ -36,6 +37,7 @@ textarea{
 }
 
 .filter-container {
+	margin: 100px 0px;
 	padding: 0px 100px;
 }
 
@@ -92,6 +94,39 @@ input[type=submit]{
 	height: 240px;
 	margin: 20px 0px;
 	padding: 5px;
+}
+
+th, td {
+  border: 1px solid #767676;
+	
+}
+
+.noBorder{
+	border: none;
+	max-width: 10px;
+	padding-right: 10px;
+}
+
+td form{
+	margin-left: 20px;
+}
+.colored{
+	background-color: #767676;
+}
+
+.lightColored{
+	background-color: #d9d9d9;
+}
+
+th{
+	border-radius: 4px;
+}
+
+table{
+	width: 100%;
+	border: 1px solid #767676;
+	border-radius: 4px;
+	padding: 20px 5px;
 }
 
 .product-container {
