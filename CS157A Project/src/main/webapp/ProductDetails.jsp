@@ -13,6 +13,8 @@
 	href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 </head>
 <body>
+	<input type="hidden" id="statusReview" name="statusReview"
+		value="<%=request.getAttribute("statusReview")%>">
 	<nav>
 		<div class="logo-container">
 			<img src="images/logo.png" />
@@ -29,7 +31,9 @@
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
-			} else {out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");}
+			} else {
+				out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+			}
 			%>
 
 			<%
@@ -48,8 +52,14 @@
 	out.println("SignIn.jsp");
 else
 	out.println("YourProduct.jsp");%>">Your
-						Products</a> <a href="Products.jsp">All Products</a>
+						Products</a> <a href="Products.jsp">All Products</a> <a
+						href="<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("Orders.jsp");%>">Your
+						Orders</a>
 				</div>
+
 			</div>
 			<%
 			if (session.getAttribute("currentUser") == null)
@@ -64,7 +74,7 @@ else
 
 	<div class="productdetail-container">
 
-		<form method="post" action = "AddToCart">
+		<form method="post" action="AddToCart">
 			<%
 			//System.out.println(productId);
 
@@ -75,33 +85,51 @@ else
 				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
 				//System.out.println(db + " database successfully opened. <br>");
 				Statement stmt = con.createStatement();
-
 				String productId = request.getParameter("productId");
 
+				String username = (String) (session.getAttribute("currentUser"));
+				String insertSql = "SELECT userid FROM Users WHERE username = '" + username + "';";
+
+				ResultSet rs = stmt.executeQuery(insertSql);
+				int userId = 0;
+				if (rs.next())
+					userId = rs.getInt(1);
+
 				String selectSql = "SELECT * FROM Products WHERE product_id ='" + productId + "';";
-				ResultSet rs = stmt.executeQuery(selectSql);
+				rs = stmt.executeQuery(selectSql);
 
 				if (rs.next()) {
 			%>
 			<div class=product-container>
-				<p>Product ID#
+				<p>
+					Product ID#
 					<%=rs.getInt(1)%>
 				</p>
 				<h2><%=rs.getString(2)%></h2>
-				<p>Description: <%=rs.getString(3)%></p>
-				<p>Quantity: <%=rs.getString(4)%></p>
-				<p>Price: $<%=rs.getString(5)%></p>
-				<p>Category: <%=rs.getString(6)%></p>
-				<p>Seller: <%=rs.getString(7)%></p>
+				<p>
+					Description:
+					<%=rs.getString(3)%></p>
+				<p>
+					Quantity:
+					<%=rs.getString(4)%></p>
+				<p>
+					Price: $<%=rs.getString(5)%></p>
+				<p>
+					Category:
+					<%=rs.getString(6)%></p>
+				<p>
+					Seller:
+					<%=rs.getString(7)%></p>
 
 			</div>
 			<%
 			}
 			%>
 
-			<input name = "productId" type = "hidden" value = <%=request.getParameter("productId") %>>
-			<input type = text name = quantity placeholder = "Quantity" required/>
-			<input type=submit value="Add to Cart" />
+			<input name="productId" type="hidden"
+				value=<%=request.getParameter("productId")%>> <input
+				type=text name=quantity placeholder="Quantity" required /> <input
+				type=submit value="Add to Cart" />
 		</form>
 
 
@@ -109,24 +137,55 @@ else
 
 	<div class="reviews">
 		<h1>Reviews</h1>
-		<form method = "post" action = "AddReview">
-		<p>Write a review</p>
-		<input name = "productId" type = "hidden" value = <%=request.getParameter("productId") %>>
-		<textarea name="product_review" placeholder="Product Review"></textarea>
-		<input type = "submit" />
+		<p id="errorMessage"></p>
+		<form method="post" action="AddReview">
+			<p>Write a review</p>
+			<input name="productId" type="hidden"
+				value=<%=request.getParameter("productId")%>>
+			<textarea name="product_review" placeholder="Product Review"></textarea>
+			<input type="submit" />
 		</form>
-		
+
 		<%
 		selectSql = "SELECT userId, description FROM Reviews WHERE productId ='" + productId + "';";
 		rs = stmt.executeQuery(selectSql);
+		if (rs.isBeforeFirst()) {
 
-		while (rs.next()) {
-			%>
-			<div class=review-container>
-				<p>User#<%=rs.getString(1)%></p>
-				<p><%=rs.getString(2)%></p>
-			</div>
+			while (rs.next()) {
+		%>
+		<div class=review-container>
+			<form method="post" action="UpdateReview">
+				<input name="pId" type="hidden"
+					value=<%=request.getParameter("productId")%>>
+				<div class="review">
+					<p>
+						User#<%=rs.getInt(1)%></p>
+					<p><%=rs.getString(2)%></p>
+				</div>
+				<%
+				if (rs.getInt(1) == userId) {
+				%>
+				<div class="reviewEdit">
+					<input type="hidden" value="Edit">
+					<button name="delete" type="submit" value=<%=rs.getString(1)%>>Delete</button>
+					<input type="hidden" value="Save"> <input type="hidden"
+						value="Cancel">
+
+				</div>
+			</form>
+
 			<%
+			}
+			%>
+
+		</div>
+		<%
+		}
+
+		} else {
+		%>
+		<p>Be the first to comment!</p>
+		<%
 		}
 
 		} catch (SQLException e) {
@@ -137,8 +196,6 @@ else
 		}
 		%>
 	</div>
-
-
 
 
 	<footer>
@@ -176,4 +233,13 @@ else
 	</footer>
 
 </body>
+<script type="text/javascript">
+	var status = document.getElementById("statusReview").value;
+	if (status == "failed") {
+		document.getElementById("errorMessage").innerHTML = "Error occurred. You can only write one review per product.";
+		console.log("hello");
+	} else
+		console.log("start");
+</script>
+
 </html>

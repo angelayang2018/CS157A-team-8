@@ -52,6 +52,10 @@
 else
 	out.println("YourProduct.jsp");%>">Your
 						Products</a> <a href="Products.jsp">All Products</a>
+						<a href = "<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("Orders.jsp");%>">Your Orders</a>
 				</div>
 			</div>
 			<%
@@ -67,6 +71,7 @@ else
 	</nav>
 
 	<div class=cart-container>
+	<h1>Your Shopping Cart</h1>
 		<%
 		//System.out.println(productId);
 
@@ -112,8 +117,10 @@ else
 			<p>
 				Seller:
 				<%=rs.getString(7)%></p>
+				
 
 		</div>
+		
 		<%
 		}
 		} catch (SQLException e) {
@@ -125,8 +132,8 @@ else
 		%>
 
 
-
-
+<input type = submit value = "Check Out">
+	
 	</div>
 
 

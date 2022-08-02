@@ -97,10 +97,11 @@ input[type=submit]{
 .product{
 	border: 1px solid black;
 	border-radius: 4px;
-	width: 240px;
-	height: 240px;
-	margin: 20px 0px;
+	width: 250px;
+	height: 250px;
+	margin: 20px 10px;
 	padding: 5px;
+	overflow-y: scroll;
 }
 
 th, td {
@@ -150,5 +151,6 @@ table{
 	font-family: "Arial";
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
 }
 

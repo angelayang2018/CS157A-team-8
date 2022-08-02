@@ -36,6 +36,7 @@ public class AddReview extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String db = "weed";
+		String productId = "";
 		RequestDispatcher dispatcher = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -50,12 +51,12 @@ public class AddReview extends HttpServlet {
 			String insertSql = "SELECT userid FROM Users WHERE username = '" + username + "';";
 
 			ResultSet rs = stmt.executeQuery(insertSql);
-			String productId = request.getParameter("productId");
+			productId = request.getParameter("productId");
 			int userId = 0;
 			if(rs.next()) userId = rs.getInt(1);
 			String description = request.getParameter("product_review");
 
-			dispatcher = request.getRequestDispatcher("/ProductDetails.jsp?productId" + userId);
+			dispatcher = request.getRequestDispatcher("/ProductDetails.jsp?productId=" + productId);
 			// returns the number of rows affected
 			insertSql = "INSERT INTO Reviews(productId, userId, description) VALUES('" + productId + "', '" + userId
 					+ "','" + description + "') ;";
@@ -67,8 +68,8 @@ public class AddReview extends HttpServlet {
 
 		} catch (SQLException e) {
 			System.out.println("SQLException caught: " + e.getMessage());
-			dispatcher = request.getRequestDispatcher("/SignUp.jsp");
-			request.setAttribute("status", "failed");
+			dispatcher = request.getRequestDispatcher("/ProductDetails.jsp?productId="+ productId);
+			request.setAttribute("statusReview", "failed");
 			dispatcher.forward(request, response);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

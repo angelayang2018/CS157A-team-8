@@ -51,6 +51,10 @@
 else
 	out.println("YourProduct.jsp");%>">Your
 						Products</a> <a href="Products.jsp">All Products</a>
+						<a href = "<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("Orders.jsp");%>">Your Orders</a>
 				</div>
 			</div>
 			<%
