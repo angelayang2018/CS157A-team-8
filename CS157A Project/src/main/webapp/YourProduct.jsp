@@ -26,7 +26,11 @@
 				placeholder="Search for products or sellers" />
 		</form>
 		<div class="nav-list">
-			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a>
+			<%
+			if (session.getAttribute("currentUser") != null) {
+				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+			} else {out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");}
+			%>
 
 			<%
 			if (session.getAttribute("currentUser") != null) {
@@ -74,15 +78,20 @@ else
 			<option value="Pre-Roll">
 			<option value="CBD">
 			<option value="Plants and Seeds">
+			<option value="Vape Pen">
 		</datalist>
 		<button>Add Product</button>
 	</form>
 
+
+	<div class="yourProducts">
+		<h1>Pending Products</h1>
+	</div>
 	<div class="yourProducts">
 		<h1>Your Products</h1>
 	</div>
 
-	
+
 	<div class="product-container">
 		<%
 		String db = "weed";
@@ -120,7 +129,8 @@ else
 			out.println("<td class = noBorder><button type = button id = \"" + rs.getString(1)
 					+ "\" onClick = \"editClicked(this.id)\">Edit</button></td>");
 			out.println("<td class = \"noBorder hidden\" id = \"saveContainer" + rs.getString(1)
-					+ "\"><button class = hidden name = save value = \"" + rs.getString(1) + "\"onClick = changeCheck(this.value) type = submit id = \"save" + rs.getString(1)
+					+ "\"><button class = hidden name = save value = \"" + rs.getString(1)
+					+ "\"onClick = changeCheck(this.value) type = submit id = \"save" + rs.getString(1)
 					+ "\">Save</button></td>");
 			out.println("<td class = \"noBorder hidden\" id = \"cancelContainer" + rs.getString(1)
 					+ "\"><a href = YourProduct.jsp><button class = \"hidden type\" = button id = \"cancel"
@@ -190,7 +200,8 @@ else
 			newInput.setAttribute("required", true);
 			newInput.setAttribute("name", ids[i] + clicked_id);
 			newInput.setAttribute("id", ids[i] + clicked_id);
-			if(i == 0) newInput.setAttribute("readonly", true);
+			if (i == 0)
+				newInput.setAttribute("readonly", true);
 			newInput.value = info.innerHTML;
 			info.innerHTML = "";
 			info.append(newInput);
@@ -211,13 +222,12 @@ else
 
 		}
 	}
-	
-	function changeCheck(value){
+
+	function changeCheck(value) {
 		var check = document.getElementById("check");
 		console.log(value);
 		check.value = value;
-		
-		
+
 	}
 </script>
 </html>

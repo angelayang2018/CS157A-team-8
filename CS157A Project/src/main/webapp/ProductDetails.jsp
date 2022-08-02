@@ -5,17 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Shopping Cart</title>
+<title>ProductDetails</title>
 <link rel="icon" href="images/logo.png" />
 <link rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet" href="css/cart.css" />
-
+<link rel="stylesheet" href="css/productDetail.css" />
 <link rel="stylesheet"
 	href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 </head>
 <body>
 	<nav>
-
 		<div class="logo-container">
 			<img src="images/logo.png" />
 			<h1>
@@ -31,10 +29,9 @@
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
-			} else {
-				out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
-			}
+			} else {out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");}
 			%>
+
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
@@ -60,62 +57,78 @@ else
 			else {
 				out.print(
 				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
-
 			}
 			%>
 		</div>
 	</nav>
 
-	<div class=cart-container>
+	<div class="productdetail-container">
+
+		<form method="post" action = "AddToCart">
+			<%
+			//System.out.println(productId);
+
+			String db = "weed";
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				java.sql.Connection con;
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+				//System.out.println(db + " database successfully opened. <br>");
+				Statement stmt = con.createStatement();
+
+				String productId = request.getParameter("productId");
+
+				String selectSql = "SELECT * FROM Products WHERE product_id ='" + productId + "';";
+				ResultSet rs = stmt.executeQuery(selectSql);
+
+				if (rs.next()) {
+			%>
+			<div class=product-container>
+				<p>Product ID#
+					<%=rs.getInt(1)%>
+				</p>
+				<h2><%=rs.getString(2)%></h2>
+				<p>Description: <%=rs.getString(3)%></p>
+				<p>Quantity: <%=rs.getString(4)%></p>
+				<p>Price: $<%=rs.getString(5)%></p>
+				<p>Category: <%=rs.getString(6)%></p>
+				<p>Seller: <%=rs.getString(7)%></p>
+
+			</div>
+			<%
+			}
+			%>
+
+			<input name = "productId" type = "hidden" value = <%=request.getParameter("productId") %>>
+			<input type = text name = quantity placeholder = "Quantity" required/>
+			<input type=submit value="Add to Cart" />
+		</form>
+
+
+	</div>
+
+	<div class="reviews">
+		<h1>Reviews</h1>
+		<form method = "post" action = "AddReview">
+		<p>Write a review</p>
+		<input name = "productId" type = "hidden" value = <%=request.getParameter("productId") %>>
+		<textarea name="product_review" placeholder="Product Review"></textarea>
+		<input type = "submit" />
+		</form>
+		
 		<%
-		//System.out.println(productId);
+		selectSql = "SELECT userId, description FROM Reviews WHERE productId ='" + productId + "';";
+		rs = stmt.executeQuery(selectSql);
 
-		String db = "weed";
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			java.sql.Connection con;
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-			//System.out.println(db + " database successfully opened. <br>");
-			Statement stmt = con.createStatement();
-
-			String username = (String) session.getAttribute("currentUser");
-			String selectSql = "SELECT userid FROM Users WHERE username = '" + username + "';";
-			ResultSet rs = stmt.executeQuery(selectSql);
-			int userId = 0;
-			if (rs.next())
-				userId = rs.getInt(1);
-
-			selectSql = "SELECT shopCartId FROM ShoppingCart where userid = '" + userId + "';";
-			rs = stmt.executeQuery(selectSql);
-			int cartId = 0;
-			if (rs.next())
-				cartId = rs.getInt(1);
-
-			selectSql = "SELECT * FROM Products WHERE product_id IN (SELECT productid FROM CartItem WHERE cartid = '" + cartId
-			+ "');";
-			rs = stmt.executeQuery(selectSql);
-
-			while (rs.next()) {
-		%>
-		<div class=product-container>
-			<p>
-				Product ID#
-				<%=rs.getInt(1)%>
-			</p>
-			<h2><%=rs.getString(2)%></h2>
-			<p>
-				Description:
-				<%=rs.getString(3)%></p>
-			<p>
-				Category:
-				<%=rs.getString(6)%></p>
-			<p>
-				Seller:
-				<%=rs.getString(7)%></p>
-
-		</div>
-		<%
+		while (rs.next()) {
+			%>
+			<div class=review-container>
+				<p>User#<%=rs.getString(1)%></p>
+				<p><%=rs.getString(2)%></p>
+			</div>
+			<%
 		}
+
 		} catch (SQLException e) {
 		System.out.println("SQLException caught: " + e.getMessage());
 		} catch (ClassNotFoundException e) {
@@ -123,11 +136,9 @@ else
 		e.printStackTrace();
 		}
 		%>
-
-
-
-
 	</div>
+
+
 
 
 	<footer>
@@ -163,5 +174,6 @@ else
 			<p>Made by Swift Sheng and Angela Yang</p>
 		</div>
 	</footer>
+
 </body>
 </html>

@@ -21,12 +21,16 @@
 			</h1>
 
 		</div>
-		<form>
+		<form method = "post" action = "Products.jsp">
 			<i class="fas fa-search"></i> <input type="text"
-				placeholder="Search for products or sellers" />
+				name = "search" placeholder="Search for products or sellers" />
 		</form>
 		<div class="nav-list">
-			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a>
+			<%
+			if (session.getAttribute("currentUser") != null) {
+				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+			} else {out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");}
+			%>
 
 			<%
 			if (session.getAttribute("currentUser") != null) {
@@ -86,6 +90,7 @@ else
 				ResultSet rs = statement.executeQuery(selectSql);
 				String[] fieldNames = {"First Name", "Last Name", "Username", "Password", "Phone", "Email"};
 				if (rs.next())
+					out.println("<p>User ID#" + rs.getString(7)+ "</p>");
 					for (int i = 1; i <= 6; i++) {
 				if (i % 2 == 0) {
 					out.print("<div class = infoContainer><h3>" + fieldNames[i - 1] + "</h3><p id = " + fieldNames[i - 1]

@@ -22,13 +22,17 @@
 			</h1>
 
 		</div>
-		<form>
+		<form method = "post" action = "Products.jsp">
 			<i class="fas fa-search"></i> <input type="text"
-				placeholder="Search for products or sellers" />
+				name = "search" placeholder="Search for products or sellers" />
 		</form>
 		<div class="nav-list">
-			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a>
-
+		<%
+			if (session.getAttribute("currentUser") != null) {
+				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+			} else {out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");}
+			%>
+			
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
