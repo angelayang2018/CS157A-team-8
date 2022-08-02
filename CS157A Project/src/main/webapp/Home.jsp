@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="css/home.css" />
 </head>
 <body>
-<input type = "hidden" name = "hide" id = "hide" value = "test">
+	<input type="hidden" name="hide" id="hide" value="test">
 	<nav>
 		<div class="logo-container">
 			<img src="images/logo.png" />
@@ -22,17 +22,19 @@
 			</h1>
 
 		</div>
-		<form method = "post" action = "Products.jsp">
-			<i class="fas fa-search"></i> <input type="text"
-				name = "search" placeholder="Search for products or sellers" />
+		<form method="post" action="Products.jsp">
+			<i class="fas fa-search"></i> <input type="text" name="search"
+				placeholder="Search for products or sellers" />
 		</form>
 		<div class="nav-list">
-		<%
+			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
-			} else {out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");}
+			} else {
+				out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+			}
 			%>
-			
+
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
@@ -42,7 +44,7 @@
 			%>
 
 			<div class="dropdown">
-				<a href="Products.jsp">Products</a>
+				 <a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
 					<a
 						href="<%if (session.getAttribute("currentUser") == null)
@@ -50,13 +52,18 @@
 else
 	out.println("YourProduct.jsp");%>">Your
 						Products</a> <a href="Products.jsp">All Products</a>
+						<a href = "<%if (session.getAttribute("currentUser") == null)
+	out.println("SignIn.jsp");
+else
+	out.println("Orders.jsp");%>">Your Orders</a>
 				</div>
 			</div>
 			<%
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
-				out.print("<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
+				out.print(
+				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
 			}
 			%>
 		</div>
@@ -88,8 +95,8 @@ else
 			String selectSql = "SELECT categoryName, imagePath FROM Category";
 			ResultSet rs = statement.executeQuery(selectSql);
 			while (rs.next()) {
-				out.print("<div class = container><a href = \"Products.jsp?category=" + rs.getString(1) +"\"><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1)
-				+ "</p></a></div>");
+				out.print("<div class = container><a href = \"Products.jsp?category=" + rs.getString(1)
+				+ "\"><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1) + "</p></a></div>");
 			}
 			rs.close();
 			statement.close();

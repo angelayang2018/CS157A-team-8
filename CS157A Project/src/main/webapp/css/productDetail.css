@@ -1,7 +1,14 @@
 .productdetail-container{
-	margin-top: 150px;
-	padding: 0px 100px;
+	margin: 150px 100px 15px 100px;
+	padding: 50px;
+	border: solid #d9d9d9 1px;
+	border-radius: 4px;
+	font-family: "Arial";
 	
+}
+
+p#errorMessage{
+	color: red;
 }
 
 .productdetail-container form{
@@ -16,5 +23,28 @@
 }
 
 .reviews{
-	padding: 0px 100px;
+	margin: 100px 100px 50px 100px;
+	padding: 50px;
+	border: solid #d9d9d9 1px;
+	border-radius: 4px;
+	font-family: "Arial";
+	display: flex;
+	flex-direction: column;
+}
+
+.reviews form{
+	display: flex;
+	flex-direction: column;
+}
+
+.review-container{
+	border: solid #d9d9d9 1px;
+	border-radius: 4px;
+	padding: 50px;
+	margin-top: 25px;	
+}
+
+.review{
+	display: flex;
+	flex-direction: column;
 }
