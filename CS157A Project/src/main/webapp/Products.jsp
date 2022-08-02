@@ -23,12 +23,16 @@
 			</h1>
 
 		</div>
-		<form>
+		<form method = "post" action = "Products.jsp">
 			<i class="fas fa-search"></i> <input type="text"
-				placeholder="Search for products or sellers" />
+				name = "search" placeholder="Search for products or sellers" />
 		</form>
 		<div class="nav-list">
-			<a href="SignIn.jsp"><i class="fas fa-shopping-cart"></i></a>
+			<%
+			if (session.getAttribute("currentUser") != null) {
+				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+			} else {out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");}
+			%>
 
 			<%
 			if (session.getAttribute("currentUser") != null) {
@@ -53,32 +57,29 @@ else
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
-				out.print("<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
-				
+				out.print(
+				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
+
 			}
 			%>
 		</div>
 	</nav>
-
-
-
-
 	<h1 class=headerProducts>Products</h1>
 	<div class="filter-container">
-		<form>
+		<form method = "post" action = "Products.jsp">
 			<%
 			String db = "weed";
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				java.sql.Connection con;
 				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-				System.out.println(db + " database successfully opened. <br>");
+				System.out.println(db + " database successfully opened.");
 				Statement statement = con.createStatement();
 				// Read row
 				String selectSql = "SELECT categoryName FROM Category";
 				ResultSet rs = statement.executeQuery(selectSql);
 				while (rs.next()) {
-					out.print("<input type = checkbox hidden name = " + rs.getString(1) + " id = " + rs.getString(1) + " value = "
+					out.print("<input type = checkbox name = checked hidden value = " + rs.getString(1) + " id = " + rs.getString(1) + " value = "
 					+ rs.getString(1) + "><label for = " + rs.getString(1) + ">" + rs.getString(1) + "</label>");
 
 				}
@@ -94,32 +95,65 @@ else
 		}
 		String completeURL = requestURL.toString();
 		System.out.println(completeURL);
-		
+
 		String query = request.getQueryString();
 		System.out.println(query);*/
 		
+		String[] checkedArray = request.getParameterValues("checked");
+		if (checkedArray != null)
+		for(int i = 0; i < checkedArray.length; i++){
+			System.out.println("checkedArray " + checkedArray[i]);
+		}
 		
+	
+	
+		selectSql = "SELECT * FROM Products WHERE ";
 		String category = request.getParameter("category");
 		String search = request.getParameter("search");
-		System.out.println(category);
-		//System.out.println(search);
-		
-        
-		
-		
-		
-		
-		if(category != null){
-			selectSql = "SELECT * FROM Products WHERE category = '" + category + "';"; 
-		}else selectSql = "SELECT * FROM Products";
+
+		if (category != null && search == null) { //filter for category but no search word
+			String[] categoryArray = category.split(" ");
+				//singular category
+			if (categoryArray.length == 1) selectSql = selectSql + "category = '" + category + "';";
+			else{ //multiple category filter
+				selectSql =  selectSql + "category = '" + categoryArray[0] + "'";
+				for(int i = 1; i < categoryArray.length; i++){
+					selectSql = selectSql + "|| category = '" + categoryArray[i] + "'";
+				}
+			}
+			selectSql = selectSql + ";";
+		} else if (search != null && category == null) { //search word but no category
+			selectSql = selectSql + "sellerName LIKE '%" + search + "%' || title LIKE '%" + search
+			+ "%' || description LIKE '%" + search + "%' || category LIKE '%" + search + "%';";
+		}else if(search != null && category != null){ //search word and category
+			selectSql = selectSql + "sellerName LIKE '%" + search + "%' || title LIKE '%" + search
+					+ "%' || description LIKE '%" + search + "%' || category LIKE '%" + search + "%'";
+			String[] categoryArray = category.split(" ");
+			for(int i = 0; i < categoryArray.length; i++){
+				selectSql = selectSql + "|| category = '" + categoryArray[i] + "'";
+			}
+		selectSql = selectSql + ";";
+			
+		}else if(checkedArray!=null){
+			if (checkedArray.length == 1) selectSql = selectSql + "category = '" + checkedArray[0] + "';";
+			else{ //multiple category filter
+				selectSql = selectSql + "category = '" + checkedArray[0] + "'";
+				for(int i = 1; i < checkedArray.length; i++){
+					selectSql = selectSql + "|| category = '" + checkedArray[i] + "'";
+				}
+			}
+			selectSql = selectSql + ";";
+			
+		} else //no search word or category filter
+			selectSql = "SELECT * FROM Products WHERE quantity <> '0';";
 		rs = statement.executeQuery(selectSql);
 		while (rs.next()) {
 
-			out.println("<div class = product>" + "<h1>" + rs.getString(2) + "</h1>");
+			out.println("<a href = ProductDetails.jsp?productId=" + rs.getString(1) + "><div class = product>" + "<h1>" + rs.getString(2) + "</h1>");
 			for (int i = 3; i <= 7; i++) {
 				out.println("<p>" + rs.getString(i) + "</p>");
 			}
-			out.println("</div>");
+			out.println("</div></a>");
 		}
 		rs.close();
 		statement.close();

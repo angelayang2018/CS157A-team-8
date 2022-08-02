@@ -24,7 +24,8 @@ public class Register extends HttpServlet {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			java.sql.Connection con;
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root",
+					"mrbigbear18!");
 			System.out.println(db + " database successfully opened. <br>");
 			Statement stmt = con.createStatement();
 
@@ -38,19 +39,28 @@ public class Register extends HttpServlet {
 			String insertSql = "INSERT INTO users (firstname, lastname, phone, email, username, password) VALUES ('"
 					+ firstname + "', '" + lastname + "', '" + phone + "', '" + email + "', '" + username + "', '"
 					+ password + "')";
-			
+
 			dispatcher = request.getRequestDispatcher("/SignIn.jsp");
-			//returns the number of rows affected
+			// returns the number of rows affected
 			int rows = stmt.executeUpdate(insertSql);
-		
+
 			if (rows > 0) {
-			request.setAttribute("status", "success");
-			System.out.println("hello");
-			}else request.setAttribute("status", "failed");
-			
+				request.setAttribute("status", "success");
+				String selectSql = "SELECT userid FROM Users WHERE username = '" + username + "';";
+
+				ResultSet rs = stmt.executeQuery(selectSql);
+				int userId = 0;
+				if (rs.next())
+					userId = rs.getInt(1);
+				insertSql = "INSERT INTO ShoppingCart (userId) VALUES ('" + userId + "');";
+
+				stmt.executeUpdate(insertSql);
+			} else
+				request.setAttribute("status", "failed");
+
 			dispatcher.forward(request, response);
-			
-			//response.sendRedirect("SignUp.jsp");
+
+			// response.sendRedirect("SignUp.jsp");
 
 		} catch (SQLException e) {
 			System.out.println("SQLException caught: " + e.getMessage());
