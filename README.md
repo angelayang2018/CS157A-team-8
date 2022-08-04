@@ -2,7 +2,7 @@
 
 Authors: Swift Sheng and Angela
 
-Our project is an online cannibis store where users can sell and buy weed products. 
+Our project is an online cannabis store where users can sell and buy weed products. 
 
 Our functional requirements:
 1. Signup/Create an Account
