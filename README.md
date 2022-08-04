@@ -5,6 +5,7 @@ Authors: Swift Sheng and Angela
 Our project is an online cannabis store where users can sell and buy weed products. 
 
 Our functional requirements:
+Users are able to... 
 1. Signup/Create an Account
 2. Login
 3. Logout
