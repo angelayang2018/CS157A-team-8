@@ -17,3 +17,8 @@ Users are able to...
 9. Edit/Delete a Review
 10. Checkout shopping cart
 
+Admin of the website is able to:
+11. Delete user
+12. Delete products 
+13. Promote a user to a seller 
+
