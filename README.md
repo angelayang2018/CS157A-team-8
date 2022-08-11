@@ -20,6 +20,5 @@ Users are able to...
 Admin of the website is able to:
 11. Delete user
 12. Delete products 
-13. Promote a user to a seller 
 
 See more about our project here: https://docs.google.com/document/d/1jRgEjmluzwCsXvSLQunRcrysHh5hlvkYe9MEs04kPaU/edit?usp=sharing
