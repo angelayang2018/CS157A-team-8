@@ -47,18 +47,15 @@ public class AddReview extends HttpServlet {
 			Statement stmt = con.createStatement();
 
 			HttpSession session = request.getSession();
-			String username = (String) session.getAttribute("currentUser");
-			String insertSql = "SELECT userid FROM Users WHERE username = '" + username + "';";
-
-			ResultSet rs = stmt.executeQuery(insertSql);
+			int userId = (int) session.getAttribute("currentId");
+			
 			productId = request.getParameter("productId");
-			int userId = 0;
-			if(rs.next()) userId = rs.getInt(1);
+			
 			String description = request.getParameter("product_review");
 
 			dispatcher = request.getRequestDispatcher("/ProductDetails.jsp?productId=" + productId);
 			// returns the number of rows affected
-			insertSql = "INSERT INTO Reviews(productId, userId, description) VALUES('" + productId + "', '" + userId
+			String insertSql = "INSERT INTO Reviews(productId, userId, description) VALUES('" + productId + "', '" + userId
 					+ "','" + description + "') ;";
 			stmt.executeUpdate(insertSql);
 

@@ -32,6 +32,7 @@ public class LoginCheck extends HttpServlet {
 
 			String selectSql = "SELECT * FROM weed.Users WHERE username ='" + username + "' AND password = '" + password
 					+ "';";
+			
 			ResultSet rs = stmt.executeQuery(selectSql);
 			if (rs.next() == false) {
 				dispatcher = request.getRequestDispatcher("/SignIn.jsp");
@@ -39,8 +40,14 @@ public class LoginCheck extends HttpServlet {
 				dispatcher.forward(request, response);
 				// response.sendRedirect("SignIn.jsp");
 			} else {
+				selectSql = "SELECT userid FROM Users WHERE username = '" + username + "';";
+				rs = stmt.executeQuery(selectSql);
+				int userId = 0;
+				if (rs.next())
+					userId = rs.getInt(1);
 				HttpSession session = request.getSession();
 				session.setAttribute("currentUser", username);
+				session.setAttribute("currentId", userId);
 				response.sendRedirect("Home.jsp");
 			}
 

@@ -31,17 +31,12 @@
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
+						+ session.getAttribute("currentUser") + "</span>");
 			} else {
 				out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
-			}
-			%>
-
-			<%
-			if (session.getAttribute("currentUser") != null) {
-				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
-				+ session.getAttribute("currentUser") + "</span>");
-			} else
 				out.print("<a class = \"hello\" href = \"SignIn.jsp\"><span>Hello,</span><span>Sign In</span>");
+			}
 			%>
 
 			<div class="dropdown">
@@ -59,9 +54,24 @@ else
 	out.println("Orders.jsp");%>">Your
 						Orders</a>
 				</div>
-
 			</div>
 			<%
+			String db = "weed";
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				java.sql.Connection con;
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+				System.out.println(db + " database successfully opened. <br>");
+				Statement statement = con.createStatement();
+				if (session.getAttribute("currentUser") != null){
+				String select = "SELECT * from Users WHERE userid IN (SELECT userId FROM Admin) AND userid = '" + (int)session.getAttribute("currentId") +"'";
+				ResultSet check = statement.executeQuery(select);
+				if(check.isBeforeFirst()){
+					out.println("<a href = Admin.jsp>Admin</a>");
+				}
+				}
+			
+			
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
@@ -69,21 +79,16 @@ else
 				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
 			}
 			%>
+
 		</div>
 	</nav>
-
 	<div class="productdetail-container">
 
 		<form method="post" action="AddToCart">
 			<%
 			//System.out.println(productId);
 
-			String db = "weed";
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-				java.sql.Connection con;
-				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-				//System.out.println(db + " database successfully opened. <br>");
+			
 				Statement stmt = con.createStatement();
 				String productId = request.getParameter("productId");
 
@@ -127,9 +132,18 @@ else
 			%>
 
 			<input name="productId" type="hidden"
-				value=<%=request.getParameter("productId")%>> <input
-				type=text name=quantity placeholder="Quantity" required /> <input
-				type=submit value="Add to Cart" />
+				value=<%=request.getParameter("productId")%>> 
+				<% 
+					int quantity = Integer.parseInt(rs.getString(4));
+					if(quantity > 0){
+				%>
+				<input type=text name=quantity placeholder="Quantity" required /> 
+				<input type=submit value="Add to Cart" />
+				<p id="errorMessageCart"></p>
+				<%
+					}else out.println("Out of Stock.");
+				
+				%>
 		</form>
 
 
@@ -235,11 +249,14 @@ else
 </body>
 <script type="text/javascript">
 	var status = document.getElementById("statusReview").value;
+	console.log(status);
 	if (status == "failed") {
 		document.getElementById("errorMessage").innerHTML = "Error occurred. You can only write one review per product.";
+	}else if(status == "failedCart"){
+		document.getElementById("errorMessageCart").innerHTML = "Error occurred. Quantity must be a number and it must be less that the total quantity.";
+	}else{
 		console.log("hello");
-	} else
-		console.log("start");
+	}
 </script>
 
 </html>

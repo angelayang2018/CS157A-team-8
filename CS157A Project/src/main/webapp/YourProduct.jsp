@@ -21,23 +21,20 @@
 			</h1>
 
 		</div>
-		<form>
-			<i class="fas fa-search"></i> <input type="text"
+		<form method="post" action="Products.jsp">
+			<i class="fas fa-search"></i> <input type="text" name="search"
 				placeholder="Search for products or sellers" />
 		</form>
 		<div class="nav-list">
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
-			} else {out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");}
-			%>
-
-			<%
-			if (session.getAttribute("currentUser") != null) {
 				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
-				+ session.getAttribute("currentUser") + "</span>");
-			} else
+						+ session.getAttribute("currentUser") + "</span>");
+			} else {
+				out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
 				out.print("<a class = \"hello\" href = \"SignIn.jsp\"><span>Hello,</span><span>Sign In</span>");
+			}
 			%>
 
 			<div class="dropdown">
@@ -48,22 +45,39 @@
 	out.println("SignIn.jsp");
 else
 	out.println("YourProduct.jsp");%>">Your
-						Products</a> <a href="Products.jsp">All Products</a>
-						<a href = "<%if (session.getAttribute("currentUser") == null)
+						Products</a> <a href="Products.jsp">All Products</a> <a
+						href="<%if (session.getAttribute("currentUser") == null)
 	out.println("SignIn.jsp");
 else
-	out.println("Orders.jsp");%>">Your Orders</a>
+	out.println("Orders.jsp");%>">Your
+						Orders</a>
 				</div>
 			</div>
 			<%
+			String db = "weed";
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				java.sql.Connection con;
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+				System.out.println(db + " database successfully opened. <br>");
+				Statement statement = con.createStatement();
+				if (session.getAttribute("currentUser") != null){
+				String select = "SELECT * from Users WHERE userid IN (SELECT userId FROM Admin) AND userid = '" + (int)session.getAttribute("currentId") +"'";
+				ResultSet check = statement.executeQuery(select);
+				if(check.isBeforeFirst()){
+					out.println("<a href = Admin.jsp>Admin</a>");
+				}
+				}
+			
+			
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
 				out.print(
 				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
-
 			}
 			%>
+
 		</div>
 	</nav>
 	<form class="addProduct" action="Create" method="post">
@@ -98,18 +112,10 @@ else
 
 	<div class="product-container">
 		<%
-		String db = "weed";
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			java.sql.Connection con;
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-			System.out.println(db + " database successfully opened. <br>");
-			Statement statement = con.createStatement();
-			// Read row
+		
 			String selectSql = "SELECT * FROM Products WHERE sellerName = \"" + session.getAttribute("currentUser") + "\";";
 			ResultSet rs = statement.executeQuery(selectSql);
-			//statement = con.createStatement();
-			// Read row
+			
 			if (!rs.isBeforeFirst()) {
 				out.println("<p>You have no products currently.</p>");
 			} else {

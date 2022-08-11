@@ -53,8 +53,9 @@ public class Register extends HttpServlet {
 				if (rs.next())
 					userId = rs.getInt(1);
 				insertSql = "INSERT INTO ShoppingCart (userId) VALUES ('" + userId + "');";
-
 				stmt.executeUpdate(insertSql);
+				
+				
 			} else
 				request.setAttribute("status", "failed");
 
