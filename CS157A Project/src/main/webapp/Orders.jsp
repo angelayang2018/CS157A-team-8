@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,17 +29,12 @@
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
+						+ session.getAttribute("currentUser") + "</span>");
 			} else {
 				out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
-			}
-			%>
-
-			<%
-			if (session.getAttribute("currentUser") != null) {
-				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
-				+ session.getAttribute("currentUser") + "</span>");
-			} else
 				out.print("<a class = \"hello\" href = \"SignIn.jsp\"><span>Hello,</span><span>Sign In</span>");
+			}
 			%>
 
 			<div class="dropdown">
@@ -58,6 +54,22 @@ else
 				</div>
 			</div>
 			<%
+			String db = "weed";
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				java.sql.Connection con;
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+				System.out.println(db + " database successfully opened. <br>");
+				Statement statement = con.createStatement();
+				if (session.getAttribute("currentUser") != null){
+				String select = "SELECT * from Users WHERE userid IN (SELECT userId FROM Admin) AND userid = '" + (int)session.getAttribute("currentId") +"'";
+				ResultSet check = statement.executeQuery(select);
+				if(check.isBeforeFirst()){
+					out.println("<a href = Admin.jsp>Admin</a>");
+				}
+				}
+			
+			
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
@@ -65,13 +77,94 @@ else
 				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
 			}
 			%>
+
 		</div>
 	</nav>
 
 
-	<div class = "order-container">
-	<h1>Your Orders</h1>
+	<div class="order-container">
+		<h1>Your Orders</h1>
+
+		<%
+		
+			Statement stmt = con.createStatement();
+
+			int userId = (int) session.getAttribute("currentId");
+
+			String selectSql = "SELECT orderid FROM Orders WHERE userid = '" + userId + "';";
+			ResultSet rs = stmt.executeQuery(selectSql);
+			int total = 0;
+
+			if (!rs.isBeforeFirst()) {
+				out.println("You do not have any orders.");
+			}
+			else {
+				while (rs.next()) {
+			selectSql = "SELECT SUM(price) FROM OrderItem where orderid = '" + rs.getInt(1) + "';";
+			Statement totalStmt = con.createStatement();
+			ResultSet totalRs = totalStmt.executeQuery(selectSql);
+
+			if (totalRs.next())
+				total = totalRs.getInt(1);
+
+			selectSql = "SELECT * FROM OrderItem WHERE orderid = '" + rs.getInt(1) + "';";
+			Statement itemStmt = con.createStatement();
+			ResultSet itemRs = itemStmt.executeQuery(selectSql);
+		%>
+		<div class="order">
+			<h2>
+				Order #<%=rs.getInt(1)%></h2>
+			<%
+			while (itemRs.next()) {
+			%>
+			<div class="order-item">
+				<%
+				selectSql = "SELECT * FROM Products WHERE product_id = '" + itemRs.getInt(2) + "';";
+				Statement itemInfo = con.createStatement();
+				ResultSet itemInfoRs = itemInfo.executeQuery(selectSql);
+				while (itemInfoRs.next()) {
+				%>
+				<h2>
+					<a
+						href="ProductDetails.jsp?productId=<%=itemInfoRs.getString(1)%>"><%=itemInfoRs.getString(2)%></a>
+				</h2>
+
+				<p>
+					Quantity:
+					<%=itemRs.getInt(3)%></p>
+				<p>
+					Price: $<%=itemRs.getInt(4)%></p>
+			</div>
+
+			<%
+			}
+			}
+			%>
+			<hr />
+			<p>
+				Total Price: $<%=total%>
+			</p>
+		</div>
+		<%
+		}
+		}
+
+		} catch (SQLException e) {
+		System.out.println("SQLException caught: " + e.getMessage());
+		out.println("Error occurred");
+
+		} catch (ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		} catch (Exception e) {
+		out.println("Error occurred");
+		}
+		%>
+
 	</div>
+
+
+
 	<footer>
 		<div class="footer-container">
 			<div class="logo-container">
