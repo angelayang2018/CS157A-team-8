@@ -4,6 +4,8 @@ Authors: Swift Sheng and Angela yang
 
 Our project is an online cannabis store where users can sell and buy weed products. 
 
+![Screen Shot 2022-08-10 at 6 19 38 PM](https://user-images.githubusercontent.com/45446731/184049171-9a3ce9f1-364d-4a44-9451-3a29fe166d8d.png)
+
 Our functional requirements:
 Users are able to... 
 1. Signup/Create an Account
@@ -22,3 +24,4 @@ Admin of the website is able to:
 12. Delete products 
 
 See more about our project here: https://docs.google.com/document/d/1jRgEjmluzwCsXvSLQunRcrysHh5hlvkYe9MEs04kPaU/edit?usp=sharing
+
