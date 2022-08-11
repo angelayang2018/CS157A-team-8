@@ -30,35 +30,47 @@
 			<%
 			if (session.getAttribute("currentUser") != null) {
 				out.print("<a href = \"ShoppingCart.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
+						+ session.getAttribute("currentUser") + "</span>");
 			} else {
 				out.print("<a href = \"SignIn.jsp\"><i class=\"fas fa-shopping-cart\"></i></a>");
+				out.print("<a class = \"hello\" href = \"SignIn.jsp\"><span>Hello,</span><span>Sign In</span>");
 			}
 			%>
 
-			<%
-			if (session.getAttribute("currentUser") != null) {
-				out.print("<a class = \"hello\" href = \"Profile.jsp\"><span>Hello,</span><span>"
-				+ session.getAttribute("currentUser") + "</span>");
-			} else
-				out.print("<a class = \"hello\" href = \"SignIn.jsp\"><span>Hello,</span><span>Sign In</span>");
-			%>
-
 			<div class="dropdown">
-				 <a href="Products.jsp">Products</a>
+				<a href="Products.jsp">Products</a>
 				<div class="dropdown-content">
 					<a
 						href="<%if (session.getAttribute("currentUser") == null)
 	out.println("SignIn.jsp");
 else
 	out.println("YourProduct.jsp");%>">Your
-						Products</a> <a href="Products.jsp">All Products</a>
-						<a href = "<%if (session.getAttribute("currentUser") == null)
+						Products</a> <a href="Products.jsp">All Products</a> <a
+						href="<%if (session.getAttribute("currentUser") == null)
 	out.println("SignIn.jsp");
 else
-	out.println("Orders.jsp");%>">Your Orders</a>
+	out.println("Orders.jsp");%>">Your
+						Orders</a>
 				</div>
 			</div>
 			<%
+			String db = "weed";
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				java.sql.Connection con;
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
+				System.out.println(db + " database successfully opened. <br>");
+				Statement statement = con.createStatement();
+				if (session.getAttribute("currentUser") != null){
+				String select = "SELECT * from Users WHERE userid IN (SELECT userId FROM Admin) AND userid = '" + (int)session.getAttribute("currentId") +"'";
+				ResultSet check = statement.executeQuery(select);
+				if(check.isBeforeFirst()){
+					out.println("<a href = Admin.jsp>Admin</a>");
+				}
+				}
+			
+			
 			if (session.getAttribute("currentUser") == null)
 				out.print("<a href=\"SignUp.jsp\"><button>Sign Up</button></a>");
 			else {
@@ -66,6 +78,7 @@ else
 				"<form method = \"post\" action = \"LogOut\"><input type = \"submit\" value = \"Log Out\"></input></form>");
 			}
 			%>
+
 		</div>
 	</nav>
 
@@ -84,28 +97,30 @@ else
 
 
 		<%
-		String db = "weed";
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			java.sql.Connection con;
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db + "?useSSL = false", "root", "mrbigbear18!");
-			System.out.println(db + " database successfully opened. <br>");
-			Statement statement = con.createStatement();
-			// Read row
+		
+			
 			String selectSql = "SELECT categoryName, imagePath FROM Category";
 			ResultSet rs = statement.executeQuery(selectSql);
 			while (rs.next()) {
-				out.print("<div class = container><a href = \"Products.jsp?category=" + rs.getString(1)
-				+ "\"><img src = \"images/" + rs.getString(2) + "\"/><p>" + rs.getString(1) + "</p></a></div>");
-			}
-			rs.close();
-			statement.close();
+		%>
+		<div class="container">
+			<a href="Products.jsp?category=<%=rs.getString(1)%>"> <img
+				src="images/<%=rs.getString(2)%>" />
+
+			</a>
+			<p><%=rs.getString(1)%></p>
+		</div>
+
+		<%
+		}
+		rs.close();
+		statement.close();
 
 		} catch (SQLException e) {
-			System.out.println("SQLException caught: " + e.getMessage());
+		System.out.println("SQLException caught: " + e.getMessage());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 		}
 		%>
 

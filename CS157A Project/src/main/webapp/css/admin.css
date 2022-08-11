@@ -1,0 +1,26 @@
+.userInfo, .productInfo, .adminInfo{
+	
+	font-family: "Arial";
+	padding: 50px;
+	border: solid #d9d9d9 1px;
+	border-radius: 4px;
+}
+
+.userInfo{
+	margin:150px 100px 50px 100px;
+}
+
+
+.productInfo, .adminInfo{
+	margin: 50px 100px 50px 100px;
+}
+
+table,tr,th,td{
+	border: solid #d9d9d9 1px;
+}
+
+.error{
+	margin:150px 100px 50px 100px;
+	font-family: "Arial";
+}
+
